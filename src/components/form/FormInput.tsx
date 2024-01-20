@@ -4,9 +4,9 @@ import "./form.scss";
 const FormInput = (props) => {
   const [focused, setFocused] = useState(false);
 
-  const { label, errorMessage, onChange, id, ...inputProps } = props;
+  const { label, errorMessage, onChange, ...inputProps } = props;
 
-  const handleFocus = (e) => {
+  const handleFocus = () => {
     setFocused(true);
   };
 

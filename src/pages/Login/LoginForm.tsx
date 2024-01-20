@@ -1,12 +1,16 @@
 import { useState } from "react";
 import FormInput from "../../components/form/FormInput";
-import axios, { Axios } from "axios";
+import axios from "axios";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./Login.scss";
 
 function LoginForm() {
-  const [values, setValues] = useState({
+  type ValuesType = {
+    [key: string]: string;
+  };
+
+  const [values, setValues] = useState<ValuesType>({
     username: "",
     password: "",
   });
@@ -30,9 +34,9 @@ function LoginForm() {
     },
   ];
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-
+    console.log("test");
     axios({
       method: "POST",
       data: {
@@ -42,7 +46,7 @@ function LoginForm() {
       withCredentials: true,
       url: "http://localhost:5000/login",
     }).then((res) => {
-      console.log(res.data.message);
+      // console.log(res.data.message);
       if (res.status === 200) {
         // If signup is successful, redirect to the login page
         toast.success("Login successful");
@@ -54,25 +58,23 @@ function LoginForm() {
     });
   };
 
-  const onChange = (e) => {
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setValues({ ...values, [e.target.name]: e.target.value });
   };
 
-  const [data, setData] = useState(null);
-
-  const getUser = () => {
-    axios({
-      method: "GET",
-      withCredentials: true,
-      url: "http://localhost:5000/login",
-    }).then((res) => {
-      if (res.status === 260) {
-        toast.error("Session has expired, please login");
-        window.location.href = "/signup";
-      }
-      console.log(res);
-    });
-  };
+  // const getUser = () => {
+  //   axios({
+  //     method: "GET",
+  //     withCredentials: true,
+  //     url: "http://localhost:5000/login",
+  //   }).then((res) => {
+  //     if (res.status === 260) {
+  //       toast.error("Session has expired, please login");
+  //       window.location.href = "/login";
+  //     }
+  //     console.log(res);
+  //   });
+  // };
 
   return (
     <div className="Login">
@@ -81,18 +83,19 @@ function LoginForm() {
         {inputs.map((input) => (
           <FormInput
             key={input.id}
-            {...input}
             value={values[input.name]}
+            {...input}
             onChange={onChange}
           />
         ))}
-        <button className="FormButton">Login</button>
+        <button className="FormButton">
+          <a>
+            <span>Login</span>
+          </a>
+        </button>
       </form>
 
-      <button onClick={getUser}> Get User </button>
-      {/* {
-        data ? <h1>welcome back {data}</h1> : null
-      } */}
+      {/* <button onClick={getUser}> Get User </button> */}
     </div>
   );
 }

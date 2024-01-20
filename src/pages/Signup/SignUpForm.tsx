@@ -1,9 +1,10 @@
 import { useState } from "react";
-import FormInput from "../../components/form/FormInput";
-import axios, { Axios } from "axios";
+import axios from "axios";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import "./SignUpCss.scss";
+import "./SignUp.scss";
+
+import FormInput from "../../components/form/FormInput";
 
 function SignUpForm() {
   const [values, setValues] = useState({
@@ -42,7 +43,7 @@ function SignUpForm() {
       errorMessage:
         "Password should be 8-20 characters and should include 1 letter, 1 number and 1 special character",
       label: "Password",
-      pattern: `^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,20}$`,
+      pattern: `^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[!@#$%^&*_])[a-zA-Z0-9!@#$%^&*_]{8,20}$`,
       required: true,
     },
     {
@@ -57,7 +58,7 @@ function SignUpForm() {
     },
   ];
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     axios({
@@ -79,20 +80,20 @@ function SignUpForm() {
         res.status === 250 &&
         res.data.message === "Email and Username is in use"
       ) {
-        setValues((e) => ({
+        setValues({
           ...values,
           email: "",
           username: "",
-        }));
+        });
         toast.error("Username and email are already in use");
       } else if (
         res.status === 251 &&
         res.data.message === "Email already in use"
       ) {
-        setValues((e) => ({
+        setValues({
           ...values,
           email: "",
-        }));
+        });
         toast.error("Email already in use");
       } else if (
         res.status === 252 &&
@@ -107,25 +108,28 @@ function SignUpForm() {
     });
   };
 
-  const onChange = (e) => {
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setValues({ ...values, [e.target.name]: e.target.value });
   };
 
   return (
     <div className="SignUp">
       <form onSubmit={handleSubmit}>
-        <h1>Sign Up </h1>
+        <h1>Sign Up</h1>
         {inputs.map((input) => (
           <FormInput
             key={input.id}
+            value={values[input.name as keyof typeof values]}
             {...input}
-            value={values[input.name]}
             onChange={onChange}
           />
         ))}
-        <button className="FormButton">Submit</button>
+        <button className="FormButton">
+          <a>
+            <span>Submit</span>
+          </a>
+        </button>
       </form>
-      <a href="/Login">Login</a>
     </div>
   );
 }

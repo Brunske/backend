@@ -1,33 +1,29 @@
 import {
   createBrowserRouter,
   Route,
-  NavLink,
   createRoutesFromElements,
   RouterProvider,
 } from "react-router-dom";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+
+//styles
 import "./App.scss";
 
 //pages
-// @ts-expect-error
-import Main from "./pages/Home/Main.jsx";
-import Login from "./pages/Login/LoginForm.jsx";
-import SignUp from "./pages/Signup/SignUpForm.jsx";
+import Main from "./pages/Home/Main";
+import LoginForm from "./pages/Login/LoginForm";
+import SignUpForm from "./pages/Signup/SignUpForm";
 
 //Layouts
-import LevelLayout from "./layouts/LevelLayout";
-import MainLayout from "./layouts/MainLayout";
+import MainLayout from "./layouts/MainLayout/MainLayout";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<MainLayout />}>
       <Route index element={<Main />} />
-
-      <Route path="/">
-        <Route path="signup" element={<SignUp />}></Route>
-        <Route path="login" element={<Login />}></Route>
-      </Route>
+      <Route path="signup" element={<SignUpForm />} />
+      <Route path="login" element={<LoginForm />} />
     </Route>
   )
 );

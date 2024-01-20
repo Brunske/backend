@@ -1,0 +1,104 @@
+.page-wrapper {
+  grid-template-columns: 100%;
+  --background-toc-active: var(--css-accent-background-color);
+  --category-color: var(--css-accent-color);
+  --category-color-engage: var(--css-accent-engage);
+  --category-color-background: var(--css-accent-background-color);
+  --mark-color: var(--css-mark-color);
+  .sticky-header-container {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+    z-index: var(--z-index-main-header);
+
+    .top-navigation {
+      background-color: var(--background-primary);
+      position: relative;
+      width: 100%;
+      .container {
+        align-items: center;
+        background-color: var(--background-primary);
+        display: flex;
+        flex-flow: row wrap;
+        gap: var(--gutter);
+        margin-left: auto;
+        margin-right: auto;
+        max-width: var(--max-width);
+        padding-left: var(--gutter);
+        padding-right: var(--gutter);
+        width: 100%;
+        @media screen and (min-width: 769px) {
+          background-color: transparent;
+        }
+        .top-navigation-wrap {
+          align-items: center;
+          display: flex;
+          flex: 1 1;
+          height: var(--top-nav-height);
+          justify-content: space-between;
+          @media screen and (min-width: 992px) {
+            flex: 0 1 auto;
+          }
+          .logo-link {
+            text-decoration: none;
+            .logo {
+              align-items: center;
+              display: flex;
+              a {
+                color: var(--text-link);
+                text-decoration: none;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .main-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+    max-width: var(--max-width);
+
+    @media screen and (min-width: 769px) {
+      display: grid;
+      gap: 3rem;
+      grid-template-areas: "sidebar main";
+      grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+      padding-left: 1.5rem;
+      padding-right: 3rem;
+    }
+    @media screen and (min-width: 1200px) {
+      display: flex;
+      gap: 3rem;
+      grid-template-areas: "sidebar main toc";
+      grid-template-columns: minmax(0, 1fr) minmax(0, 2.5fr) minmax(0, 15rem);
+      padding-left: 1rem;
+      padding-right: 1rem;
+    }
+    main {
+      display: flow-root;
+      min-height: 80vh;
+    }
+    .main-content {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      .main-page-content {
+        overflow-wrap: break-word;
+        padding: 3rem 1rem 1rem;
+        @media screen and (min-width: 769px) {
+          margin-bottom: 0.5rem;
+          padding: 0;
+        }
+        @media screen and (min-width: 426px) {
+          padding: 3rem;
+        }
+      }
+    }
+  }
+}
