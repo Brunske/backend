@@ -14,6 +14,7 @@ import "./App.scss";
 import Main from "./pages/Home/Main";
 import LoginForm from "./pages/Login/LoginForm";
 import SignUpForm from "./pages/Signup/SignUpForm";
+import LevelSelector from "./pages/LevelSelector/LevelSelector";
 
 //Layouts
 import MainLayout from "./layouts/MainLayout/MainLayout";
@@ -24,6 +25,10 @@ const router = createBrowserRouter(
       <Route index element={<Main />} />
       <Route path="signup" element={<SignUpForm />} />
       <Route path="login" element={<LoginForm />} />
+      <Route path="level-selector" element={<LevelSelector />} />
+      {/* <Route path="level-seletor/:levelId" element={<Level />} />
+      <Route path="account" element={<Account />} />
+      <Route path="help" element={<Help />} /> */}
     </Route>
   )
 );

@@ -1,11 +1,15 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import FormInput from "../../components/form/FormInput";
 import axios from "axios";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+
 import "./Login.scss";
 
 function LoginForm() {
+  const navigate = useNavigate();
+
   type ValuesType = {
     [key: string]: string;
   };
@@ -36,7 +40,7 @@ function LoginForm() {
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    console.log("test");
+
     axios({
       method: "POST",
       data: {
@@ -44,18 +48,31 @@ function LoginForm() {
         password: values.password,
       },
       withCredentials: true,
-      url: "http://localhost:5000/login",
-    }).then((res) => {
-      // console.log(res.data.message);
-      if (res.status === 200) {
-        // If signup is successful, redirect to the login page
-        toast.success("Login successful");
-        window.location.href = "/";
-      } else if (res.status === 210) {
-        // If login fails, display an error message
-        toast.error("Username or password is incorect");
-      }
-    });
+      url: `${import.meta.env.VITE_API_BASE_URL}/login`,
+      validateStatus: function (status) {
+        return status === 200 || status === 401;
+      },
+    })
+      .then((res) => {
+        if (res.status === 200 && res.data.message === "Login successful") {
+          // If signup is successful, redirect to the login page
+          toast.success("Login successful");
+          navigate("/level-selector");
+        } else if (res.status === 401 && res.data.message === "Unauthorized") {
+          // If login fails, display an error message
+          toast.error("Username or password is incorect");
+        } else if (
+          res.status === 401 &&
+          res.data.message === "An error occurred during login"
+        ) {
+          toast.error("An error occurred. Please try again.");
+        }
+      })
+      .catch((error) => {
+        // Handle network errors or unexpected server responses
+        console.error(error);
+        toast.error("An error occurred. Please try again.");
+      });
   };
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -88,10 +105,8 @@ function LoginForm() {
             onChange={onChange}
           />
         ))}
-        <button className="FormButton">
-          <a>
-            <span>Login</span>
-          </a>
+        <button type="submit" className="FormButton">
+          <span>Login</span>
         </button>
       </form>
 

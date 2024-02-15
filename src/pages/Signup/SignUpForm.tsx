@@ -3,10 +3,13 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./SignUp.scss";
+import { useNavigate } from "react-router-dom";
 
 import FormInput from "../../components/form/FormInput";
 
 function SignUpForm() {
+  const navigate = useNavigate();
+
   const [values, setValues] = useState({
     username: "",
     email: "",
@@ -69,43 +72,52 @@ function SignUpForm() {
         password: values.password,
       },
       withCredentials: true,
-      url: "http://localhost:5000/signup",
-    }).then((res) => {
-      console.log(res);
-      if (res.status === 200) {
-        // If signup is successful, redirect to the login page
-        toast.success("Sign up successful");
-        window.location.href = "/login";
-      } else if (
-        res.status === 250 &&
-        res.data.message === "Email and Username is in use"
-      ) {
-        setValues({
-          ...values,
-          email: "",
-          username: "",
-        });
-        toast.error("Username and email are already in use");
-      } else if (
-        res.status === 251 &&
-        res.data.message === "Email already in use"
-      ) {
-        setValues({
-          ...values,
-          email: "",
-        });
-        toast.error("Email already in use");
-      } else if (
-        res.status === 252 &&
-        res.data.message === "Username is taken"
-      ) {
-        setValues(() => ({
-          ...values,
-          username: "",
-        }));
-        toast.error("username already in use");
-      }
-    });
+      url: `${import.meta.env.VITE_API_BASE_URL}/signup`,
+      validateStatus: function (status) {
+        return status === 200 || status === 409;
+      },
+    })
+      .then((res) => {
+        console.log(res);
+        if (res.status === 200) {
+          // If signup is successful, redirect to the login page
+          toast.success("Sign up successful");
+          navigate("/login");
+        } else if (
+          res.status === 409 &&
+          res.data.message === "Email and Username are in use"
+        ) {
+          setValues({
+            ...values,
+            email: "",
+            username: "",
+          });
+          toast.error("Username and email are already in use");
+        } else if (
+          res.status === 409 &&
+          res.data.message === "Email is already in use"
+        ) {
+          setValues({
+            ...values,
+            email: "",
+          });
+          toast.error("Email already in use");
+        } else if (
+          res.status === 409 &&
+          res.data.message === "Username is already in use"
+        ) {
+          setValues(() => ({
+            ...values,
+            username: "",
+          }));
+          toast.error("username already in use");
+        }
+      })
+      .catch((error) => {
+        // Handle network errors or unexpected server responses
+        console.log(error);
+        toast.error("An error occurred. Please try again.");
+      });
   };
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -125,9 +137,7 @@ function SignUpForm() {
           />
         ))}
         <button className="FormButton">
-          <a>
-            <span>Submit</span>
-          </a>
+          <span>Submit</span>
         </button>
       </form>
     </div>
