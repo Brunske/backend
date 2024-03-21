@@ -79,19 +79,9 @@ function LoginForm() {
     setValues({ ...values, [e.target.name]: e.target.value });
   };
 
-  // const getUser = () => {
-  //   axios({
-  //     method: "GET",
-  //     withCredentials: true,
-  //     url: "http://localhost:5000/login",
-  //   }).then((res) => {
-  //     if (res.status === 260) {
-  //       toast.error("Session has expired, please login");
-  //       window.location.href = "/login";
-  //     }
-  //     console.log(res);
-  //   });
-  // };
+  const getUser = () => {
+    navigate("/level-selector");
+  };
 
   return (
     <div className="Login">
@@ -110,7 +100,7 @@ function LoginForm() {
         </button>
       </form>
 
-      {/* <button onClick={getUser}> Get User </button> */}
+      <button onClick={getUser}> Get User </button>
     </div>
   );
 }

@@ -26,8 +26,8 @@ const router = createBrowserRouter(
       <Route path="signup" element={<SignUpForm />} />
       <Route path="login" element={<LoginForm />} />
       <Route path="level-selector" element={<LevelSelector />} />
-      {/* <Route path="level-seletor/:levelId" element={<Level />} />
-      <Route path="account" element={<Account />} />
+      {/* <Route path="level-seletor/:levelId" element={<Level />} /> */}
+      {/* <Route path="account" element={<Account />} />
       <Route path="help" element={<Help />} /> */}
     </Route>
   )
